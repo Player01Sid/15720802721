@@ -23,13 +23,16 @@ public class ProductsService {
                 .build();
     }
 
-    public Mono<List<Product>> getProducts(String top, String minPrice, String maxPrice, String company) {
+    public Mono<List<Product>> getProducts(String top, String minPrice, String maxPrice, String company, String category) {
         return webClient.get()
-                .uri(uriBuilder -> uriBuilder.
-                        path("/products")
-                        .queryParam("top","10")
-                        .queryParam("minPrice","1")
-                        .queryParam("maxPrice","10000")
+                .uri(uriBuilder -> uriBuilder
+                        .pathSegment(company)
+                        .path("/categories")
+                        .pathSegment(category)
+                        .path("/products")
+                        .queryParam("top",top)
+                        .queryParam("minPrice",minPrice)
+                        .queryParam("maxPrice",maxPrice)
                         .build())
                 .retrieve()
                 .bodyToFlux(Product.class) // Convert JSON array to Flux of Product

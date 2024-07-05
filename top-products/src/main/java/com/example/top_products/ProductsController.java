@@ -2,10 +2,7 @@ package com.example.top_products;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -22,13 +19,14 @@ public class ProductsController {
         this.productsService = productsService;
     }
 
-    @GetMapping(path = "{company}/")
+    @GetMapping(path = "{company}/categories/{category}/products")
     public Mono<List<Product>> getRequest(
             @RequestParam(required = false) String top,
             @RequestParam(required = false) String minPrice,
-            @RequestParam(required = false) String maxPrice
-
+            @RequestParam(required = false) String maxPrice,
+            @PathVariable("company") String company,
+            @PathVariable("category") String category
     ){
-        return productsService.getProducts();
+        return productsService.getProducts(top, minPrice, maxPrice, company, category);
     }
 }
